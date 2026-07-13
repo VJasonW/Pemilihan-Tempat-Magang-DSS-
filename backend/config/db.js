@@ -19,6 +19,7 @@ if (process.env.DATABASE_URL) {
     password: process.env.DB_PASSWORD || '',
     database: process.env.DB_NAME || 'internmatch_dss',
     ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
+    allowPublicKeyRetrieval: true,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
