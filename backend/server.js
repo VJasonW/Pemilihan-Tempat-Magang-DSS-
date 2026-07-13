@@ -36,7 +36,11 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Terjadi kesalahan pada server.' });
 });
 
-const PORT = (process.env.PORT && process.env.PORT !== '3306') ? process.env.PORT : 5000;
-app.listen(PORT, () => {
-  console.log(`✅ InternMatch DSS backend berjalan di http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  const PORT = (process.env.PORT && process.env.PORT !== '3306') ? process.env.PORT : 5000;
+  app.listen(PORT, () => {
+    console.log(`✅ InternMatch DSS backend berjalan di http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
