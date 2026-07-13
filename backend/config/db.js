@@ -10,7 +10,14 @@ let pool;
 
 if (process.env.DATABASE_URL) {
   // Menggunakan connection URI (contoh: mysql://user:pass@host:port/db)
-  pool = mysql.createPool(process.env.DATABASE_URL);
+  let connectionString = process.env.DATABASE_URL;
+  if (connectionString.includes('ssl-mode=REQUIRED')) {
+    connectionString = connectionString.replace('ssl-mode=REQUIRED', 'ssl={"rejectUnauthorized":false}');
+  } else if (!connectionString.includes('ssl=')) {
+    const separator = connectionString.includes('?') ? '&' : '?';
+    connectionString += `${separator}ssl={"rejectUnauthorized":false}`;
+  }
+  pool = mysql.createPool(connectionString);
 } else {
   // Menggunakan konfigurasi individual
   pool = mysql.createPool({
